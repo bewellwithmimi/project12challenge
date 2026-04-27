@@ -592,7 +592,7 @@
       </div>
       <div class="streak-badge">
         <div class="streak-num" id="streak-num">0</div>
-        <div class="streak-label">day streak</div>
+        <div class="streak-label">DAY STREAK</div>
       </div>
     </div>
 
@@ -738,15 +738,15 @@
       <div class="gratitude-inputs">
         <div class="gratitude-row">
           <span class="gratitude-num">1.</span>
-          <input class="gratitude-input" id="g0" type="text" placeholder="..." autocomplete="off">
+          <input class="gratitude-input" id="g0" type="text" oninput="autoSave()" placeholder="..." autocomplete="off">
         </div>
         <div class="gratitude-row">
           <span class="gratitude-num">2.</span>
-          <input class="gratitude-input" id="g1" type="text" placeholder="..." autocomplete="off">
+          <input class="gratitude-input" id="g1" type="text" oninput="autoSave()" placeholder="..." autocomplete="off">
         </div>
         <div class="gratitude-row">
           <span class="gratitude-num">3.</span>
-          <input class="gratitude-input" id="g2" type="text" placeholder="..." autocomplete="off">
+          <input class="gratitude-input" id="g2" type="text" oninput="autoSave()" placeholder="..." autocomplete="off">
         </div>
       </div>
     </div>
@@ -757,19 +757,19 @@
       <div class="gratitude-inputs">
         <div class="gratitude-row">
           <span class="gratitude-num">B</span>
-          <input class="gratitude-input" id="f0" type="text" placeholder="Breakfast..." autocomplete="off">
+          <input class="gratitude-input" id="f0" type="text" oninput="autoSave()" placeholder="Breakfast..." autocomplete="off">
         </div>
         <div class="gratitude-row">
           <span class="gratitude-num">L</span>
-          <input class="gratitude-input" id="f1" type="text" placeholder="Lunch..." autocomplete="off">
+          <input class="gratitude-input" id="f1" type="text" oninput="autoSave()" placeholder="Lunch..." autocomplete="off">
         </div>
         <div class="gratitude-row">
           <span class="gratitude-num">D</span>
-          <input class="gratitude-input" id="f2" type="text" placeholder="Dinner..." autocomplete="off">
+          <input class="gratitude-input" id="f2" type="text" oninput="autoSave()" placeholder="Dinner..." autocomplete="off">
         </div>
         <div class="gratitude-row">
           <span class="gratitude-num">S</span>
-          <input class="gratitude-input" id="f3" type="text" placeholder="Snack..." autocomplete="off">
+          <input class="gratitude-input" id="f3" type="text" oninput="autoSave()" placeholder="Snack..." autocomplete="off">
         </div>
       </div>
     </div>
@@ -777,7 +777,7 @@
     <!-- MEMORY -->
     <div class="memory-card">
       <div class="memory-label">What I want to remember about today</div>
-      <textarea class="memory-input" id="memory-note" placeholder="..." rows="2"></textarea>
+      <textarea class="memory-input" id="memory-note" oninput="autoSave()" placeholder="..." rows="2"></textarea>
     </div>
 
   </div><!-- end habits-container -->
@@ -1002,6 +1002,29 @@ function toggleHabit(index) {
     data.days[today].habits[index] = !data.days[today].habits[index];
     saveData(data);
     renderDay(data);
+  } catch(e) { console.error(e); }
+}
+
+function autoSave() {
+  try {
+    var data = loadData();
+    if (!data) return;
+    var today = todayStr();
+    if (!data.days[today]) data.days[today] = emptyDay();
+    if (data.days[today].locked) return;
+    data.days[today].gratitude = [
+      document.getElementById('g0').value,
+      document.getElementById('g1').value,
+      document.getElementById('g2').value
+    ];
+    data.days[today].food = [
+      document.getElementById('f0').value,
+      document.getElementById('f1').value,
+      document.getElementById('f2').value,
+      document.getElementById('f3').value
+    ];
+    data.days[today].note = document.getElementById('memory-note').value;
+    saveData(data);
   } catch(e) { console.error(e); }
 }
 
