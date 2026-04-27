@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="P12">
+<meta name="theme-color" content="#f5f0eb">
+<title>P12</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0eb;
+    --white: #ffffff;
+    --black: #1a1a1a;
+    --gray: #8a8a8a;
+    --light-gray: #e8e3de;
+    --check-bg: #e0dbd5;
+    --checked: #1a1a1a;
+    --accent: #c8a97e;
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--cream);
+    font-family: 'DM Mono', monospace;
+    color: var(--black);
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    overscroll-behavior: none;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: block; }
+
+  /* ── HOME SCREEN ── */
+  #home-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 48px 32px;
+    text-align: center;
+  }
+  #home-screen.active { display: flex; }
+
+  .home-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .home-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    line-height: 1.05;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+
+  .home-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .home-subtitle {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--gray);
+    margin-bottom: 16px;
+  }
+
+  .home-pillars {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-bottom: 56px;
+  }
+
+  .home-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--light-gray);
+    margin: 0 auto 56px;
+  }
+
+  .btn-start {
+    width: 100%;
+    max-width: 280px;
+    padding: 18px 0;
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn-start:active { opacity: 0.75; }
+
+  .home-note {
+    margin-top: 20px;
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── DAY SCREEN ── */
+  #day-screen {
+    display: none;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  #day-screen.active { display: flex; }
+
+  .day-header {
+    padding: 56px 24px 20px;
+    background: var(--cream);
+  }
+
+  .day-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .day-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 52px;
+    line-height: 1;
+    color: var(--black);
+  }
+
+  .streak-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .streak-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 40px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .streak-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+    text-transform: uppercase;
+  }
+
+  .day-date {
+    font-size: 12px;
+    color: var(--gray);
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .progress-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .progress-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: var(--card-shadow);
+  }
+
+  .progress-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--black);
+  }
+
+  .progress-label {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .win-note {
+    font-size: 11px;
+    color: var(--black);
+    margin-top: 14px;
+    letter-spacing: 0.02em;
+  }
+
+  .win-note span {
+    font-weight: 500;
+  }
+
+  .section-divider {
+    height: 1px;
+    background: var(--light-gray);
+    margin: 16px 0 0;
+  }
+
+  /* ── HABIT LIST ── */
+  .habits-container {
+    flex: 1;
+    padding: 20px 24px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .habit-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    box-shadow: var(--card-shadow);
+    cursor: pointer;
+    transition: transform 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    user-select: none;
+  }
+  .habit-card:active { transform: scale(0.98); }
+  .habit-card.checked { background: var(--white); }
+
+  .habit-check {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--check-bg);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .habit-card.checked .habit-check {
+    background: var(--checked);
+  }
+
+  .check-icon {
+    display: none;
+    width: 14px;
+    height: 14px;
+  }
+  .habit-card.checked .check-icon { display: block; }
+
+  .habit-info { flex: 1; }
+
+  .habit-emoji { font-size: 18px; margin-bottom: 2px; display: block; }
+
+  .habit-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--black);
+    letter-spacing: 0.01em;
+  }
+
+  .habit-card.checked .habit-name {
+    color: var(--gray);
+    text-decoration: line-through;
+    text-decoration-color: var(--light-gray);
+  }
+
+  .habit-note {
+    font-size: 11px;
+    color: var(--gray);
+    margin-top: 2px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── GRATITUDE ── */
+  .gratitude-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    box-shadow: var(--card-shadow);
+  }
+
+  .gratitude-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .gratitude-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .gratitude-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .gratitude-num {
+    font-size: 11px;
+    color: var(--gray);
+    width: 14px;
+    flex-shrink: 0;
+  }
+
+  .gratitude-input {
+    flex: 1;
+    border: none;
+    border-bottom: 1px solid var(--light-gray);
+    background: transparent;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--black);
+    padding: 4px 0;
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  .gratitude-input::placeholder { color: var(--light-gray); }
+
+  /* ── MEMORY NOTE ── */
+  .memory-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+    box-shadow: var(--card-shadow);
+  }
+
+  .memory-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .memory-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--light-gray);
+    background: transparent;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--black);
+    padding: 4px 0;
+    outline: none;
+    resize: none;
+    -webkit-appearance: none;
+    min-height: 40px;
+  }
+
+  .memory-input::placeholder { color: var(--light-gray); }
+
+  /* ── LOCK BUTTON ── */
+  .lock-wrap {
+    padding: 0 24px 20px;
+    background: var(--cream);
+  }
+
+  .btn-lock {
+    width: 100%;
+    padding: 18px 0;
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn-lock:active { opacity: 0.75; }
+  .btn-lock:disabled {
+    background: var(--light-gray);
+    color: var(--gray);
+    cursor: default;
+  }
+
+  .btn-unlock {
+    width: 100%;
+    margin-top: 10px;
+    padding: 14px 0;
+    background: transparent;
+    border: 1px solid var(--light-gray);
+    border-radius: 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--gray);
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .btn-unlock:active { background: var(--light-gray); }
+
+  /* ── HISTORY ── */
+  .history-section {
+    padding: 0 24px 40px;
+  }
+
+  .history-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .history-card {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+  }
+
+  .history-row {
+    display: flex;
+    align-items: center;
+    padding: 14px 18px;
+    gap: 14px;
+    border-bottom: 1px solid var(--cream);
+  }
+  .history-row:last-child { border-bottom: none; }
+
+  .history-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--check-bg);
+    flex-shrink: 0;
+  }
+  .history-dot.won { background: var(--accent); }
+
+  .history-info { flex: 1; }
+
+  .history-date {
+    font-size: 12px;
+    color: var(--gray);
+  }
+
+  .history-score {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--black);
+    margin-top: 1px;
+  }
+
+  .history-tag {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--gray);
+    background: var(--cream);
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+
+  /* ── HOW TO USE ── */
+  .how-btn {
+    width: calc(100% - 48px);
+    margin: 0 24px 32px;
+    padding: 16px 0;
+    background: transparent;
+    border: 1px solid var(--light-gray);
+    border-radius: 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--gray);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .how-btn:active { background: var(--light-gray); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 100;
+    align-items: flex-end;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal-sheet {
+    background: var(--white);
+    border-radius: 24px 24px 0 0;
+    padding: 32px 24px 48px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--light-gray);
+    border-radius: 2px;
+    margin: 0 auto 24px;
+  }
+
+  .modal-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+
+  .modal-body {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.7;
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .modal-close {
+    width: 100%;
+    padding: 16px 0;
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: 16px;
+  }
+
+  /* ── LOCKED DAY ── */
+  .locked-banner {
+    background: var(--accent);
+    color: var(--white);
+    text-align: center;
+    padding: 10px 24px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HOME SCREEN ══ -->
+<div id="home-screen" class="screen active">
+  <div class="home-title">PROJECT <em>12</em><br>CHALLENGE</div>
+  <div class="home-subtitle">3-Month Glow Up</div>
+  <div class="home-pillars">Health &nbsp;·&nbsp; Home &nbsp;·&nbsp; Habits &nbsp;·&nbsp; Finances</div>
+  <div class="home-divider"></div>
+  <button class="btn-start" onclick="startChallenge()">Start</button>
+  <div style="text-align:center;font-size:9px;letter-spacing:0.14em;color:var(--gray);text-transform:uppercase;margin-top:32px;"><a href="https://project12challenge.com" target="_blank" style="color:var(--gray);text-decoration:none;text-decoration-line:none;-webkit-text-decoration:none;">project12challenge.com</a></div>
+</div>
+
+<!-- ══ DAY SCREEN ══ -->
+<div id="day-screen" class="screen">
+  <div id="locked-banner" class="locked-banner" style="display:none">Day Locked</div>
+
+  <div class="day-header">
+    <div class="day-top">
+      <div>
+        <div class="day-number" id="day-label">DAY 1</div>
+        <div class="day-date" id="day-date"></div>
+      </div>
+      <div class="streak-badge">
+        <div class="streak-num" id="streak-num">0</div>
+        <div class="streak-label">day streak</div>
+      </div>
+    </div>
+
+    <div class="progress-row">
+      <div class="progress-card">
+        <div class="progress-num" id="habits-done">0 / 9</div>
+        <div class="progress-label">Habits</div>
+      </div>
+      <div class="progress-card">
+        <div class="progress-num" id="day-progress">Day 1 of 84</div>
+        <div class="progress-label">Progress</div>
+      </div>
+    </div>
+
+    <div class="win-note" id="win-note"><span>Win today</span> = complete 6 of 9 habits</div>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="habits-container">
+    <div class="section-label">Today</div>
+
+    <!-- HABITS -->
+    <div class="habit-card" id="h0" onclick="toggleHabit(0)">
+      <div class="habit-check">
+        <svg class="check-icon" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7l4 4 6-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="habit-info">
+        <span class="habit-emoji">☀️</span>
+        <div class="habit-name">Wake Up Before 7 a.m.</div>
+        <div class="habit-note">Start the day on your terms</div>
+      </div>
+    </div>
+
+    <div class="habit-card" id="h1" onclick="toggleHabit(1)">
+      <div class="habit-check">
+        <svg class="check-icon" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7l4 4 6-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="habit-info">
+        <span class="habit-emoji">💪</span>
+        <div class="habit-name">Exercise 30+ Minutes</div>
+        <div class="habit-note">Any movement counts</div>
+      </div>
+    </div>
+
+    <div class="habit-card" id="h2" onclick="toggleHabit(2)">
+      <div class="habit-check">
+        <svg class="check-icon" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7l4 4 6-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="habit-info">
+        <span class="habit-emoji">🥗</span>
+        <div class="habit-name">Followed a Healthy Diet</div>
+        <div class="habit-note">Fuel your body well</div>
+      </div>
+    </div>
+
+    <div class="habit-card" id="h3" onclick="toggleHabit(3)">
+      <div class="habit-check">
+        <svg class="check-icon" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7l4 4 6-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="habit-info">
+        <span class="habit-emoji">✨</span>
+        <div class="habit-name">Self-Care Routine</div>
+        <div class="habit-note">Show up for yourself first</div>
+      </div>
+    </div>
+
+    <div class="habit-card" id="h4" onclick="toggleHabit(4)">
+      <div class="habit-check">
+        <svg class="check-icon" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7l4 4 6-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="habit-info">
+        <span class="habit-emoji">📖</span>
+        <div class="habit-name">Read 10 Pages</div>
+        <div class="habit-note">Feed your mind daily</div>
+      </div>
+    </div>
+
+    <div class="habit-card" id="h5" onclick="toggleHabit(5)">
+      <div class="habit-check">
+        <svg class="check-icon" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7l4 4 6-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="habit-info">
+        <span class="habit-emoji">🏡</span>
+        <div class="habit-name">Home-Care Routine</div>
+        <div class="habit-note">Your environment reflects your standards</div>
+      </div>
+    </div>
+
+    <div class="habit-card" id="h6" onclick="toggleHabit(6)">
+      <div class="habit-check">
+        <svg class="check-icon" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7l4 4 6-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="habit-info">
+        <span class="habit-emoji">💼</span>
+        <div class="habit-name">Side-Hustle or Skill Work</div>
+        <div class="habit-note">Build your future today</div>
+      </div>
+    </div>
+
+    <div class="habit-card" id="h7" onclick="toggleHabit(7)">
+      <div class="habit-check">
+        <svg class="check-icon" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7l4 4 6-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="habit-info">
+        <span class="habit-emoji">🌙</span>
+        <div class="habit-name">Evening Routine</div>
+        <div class="habit-note">Wind down with intention</div>
+      </div>
+    </div>
+
+    <div class="habit-card" id="h8" onclick="toggleHabit(8)">
+      <div class="habit-check">
+        <svg class="check-icon" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7l4 4 6-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="habit-info">
+        <span class="habit-emoji">📊</span>
+        <div class="habit-name">Tracked My Progress</div>
+        <div class="habit-note">What gets tracked gets done</div>
+      </div>
+    </div>
+
+    <!-- GRATITUDE -->
+    <div class="gratitude-card" style="margin-top:8px">
+      <div class="gratitude-label">I am grateful for...</div>
+      <div class="gratitude-inputs">
+        <div class="gratitude-row">
+          <span class="gratitude-num">1.</span>
+          <input class="gratitude-input" id="g0" type="text" placeholder="..." autocomplete="off">
+        </div>
+        <div class="gratitude-row">
+          <span class="gratitude-num">2.</span>
+          <input class="gratitude-input" id="g1" type="text" placeholder="..." autocomplete="off">
+        </div>
+        <div class="gratitude-row">
+          <span class="gratitude-num">3.</span>
+          <input class="gratitude-input" id="g2" type="text" placeholder="..." autocomplete="off">
+        </div>
+      </div>
+    </div>
+
+    <!-- MEMORY -->
+    <div class="memory-card">
+      <div class="memory-label">What I want to remember about today</div>
+      <textarea class="memory-input" id="memory-note" placeholder="..." rows="2"></textarea>
+    </div>
+
+  </div><!-- end habits-container -->
+
+  <!-- LOCK -->
+  <div class="lock-wrap">
+    <button class="btn-lock" id="lock-btn" onclick="lockDay()">Lock My Day</button>
+    <button class="btn-unlock" id="unlock-btn" onclick="unlockDay()" style="display:none">Unlock Day</button>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="history-section">
+    <div class="history-label">Last 7 Days</div>
+    <div class="history-card" id="history-list"></div>
+  </div>
+
+  <!-- HOW TO USE -->
+  <button class="how-btn" onclick="openHow()">How to Use This App</button>
+  <div style="text-align:center;font-size:9px;letter-spacing:0.14em;color:var(--gray);text-transform:uppercase;margin-top:32px;"><a href="https://project12challenge.com" target="_blank" style="color:var(--gray);text-decoration:none;text-decoration-line:none;-webkit-text-decoration:none;">project12challenge.com</a></div>
+
+</div><!-- end day-screen -->
+
+<!-- ══ HOW TO USE MODAL ══ -->
+<div class="modal-overlay" id="how-modal" onclick="closeHow(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">How to Use This App</div>
+    <div class="modal-body">
+      <strong>What is this?</strong><br>
+      Your daily habit tracker for the Project 12 Challenge. 12 weeks to improve your health, home, habits, and finances.<br><br>
+
+      <strong>Your 9 daily habits</strong><br>
+      Each habit is one checkbox. Tap to check it off. Complete at least 6 of 9 to win the day.<br><br>
+
+      <strong>How to keep your streak</strong><br>
+      Complete 6 or more habits and tap Lock My Day before midnight. Your streak grows every time you win a day.<br><br>
+
+      <strong>If you miss a day</strong><br>
+      Miss a day? Keep going. This is about progress over perfection. Every day you show up still counts.<br><br>
+
+      <strong>Gratitude and notes</strong><br>
+      Fill in your three gratitudes and a note before you lock. These save to your device.<br><br>
+
+      <strong>Save to your home screen</strong><br>
+      Open this link in Safari. Tap the Share button at the bottom. Tap Add to Home Screen. It will open like an app from now on.
+    </div>
+    <button class="modal-close" onclick="closeHow()">Done</button>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+const TOTAL_DAYS = 90;
+const WIN_THRESHOLD = 6;
+const STORAGE_KEY = 'p12_data';
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
+function saveData(data) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function todayStr() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function formatDate(str) {
+  const parts = str.split('-').map(Number);
+  const date = new Date(parts[0], parts[1]-1, parts[2]);
+  return date.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
+}
+
+function initData(startDate) {
+  return { startDate: startDate, days: {}, streak: 0, lastLocked: null };
+}
+
+function getDayNumber(data) {
+  const start = new Date(data.startDate + 'T00:00:00');
+  const now = new Date(todayStr() + 'T00:00:00');
+  const diff = Math.floor((now - start) / (1000*60*60*24));
+  return Math.min(diff + 1, TOTAL_DAYS);
+}
+
+function computeStreak(data) {
+  var streak = 0;
+  var start = new Date(data.startDate + 'T00:00:00');
+  var today = todayStr();
+  var dayNum = getDayNumber(data);
+  for (var i = dayNum - 1; i >= 0; i--) {
+    var d = new Date(start);
+    d.setDate(d.getDate() + i);
+    var key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    if (key === today) continue;
+    var day = data.days[key];
+    if (day && day.locked && day.won) { streak++; }
+    else { break; }
+  }
+  return streak;
+}
+
+function showHome() {
+  var h = document.getElementById('home-screen');
+  var d = document.getElementById('day-screen');
+  if (h) { h.style.display = 'flex'; }
+  if (d) { d.style.display = 'none'; }
+}
+
+function showDay() {
+  var h = document.getElementById('home-screen');
+  var d = document.getElementById('day-screen');
+  if (h) { h.style.display = 'none'; }
+  if (d) { d.style.display = 'flex'; }
+}
+
+function startChallenge() {
+  var data = initData(todayStr());
+  saveData(data);
+  renderDay(data);
+  showDay();
+}
+
+function emptyDay() {
+  return { habits: [false,false,false,false,false,false,false,false,false], gratitude: ['','',''], note: '', locked: false, won: false };
+}
+
+function renderDay(data) {
+  var today = todayStr();
+  var dayNum = getDayNumber(data);
+  if (!data.days[today]) data.days[today] = emptyDay();
+  var dayData = data.days[today];
+
+  document.getElementById('day-label').textContent = 'DAY ' + dayNum;
+  document.getElementById('day-date').textContent = formatDate(today);
+  document.getElementById('day-progress').textContent = 'Day ' + dayNum + ' of 84';
+
+  var streak = computeStreak(data);
+  document.getElementById('streak-num').textContent = streak;
+
+  var checked = dayData.habits.filter(Boolean).length;
+  document.getElementById('habits-done').textContent = checked + ' / 9';
+
+  for (var i = 0; i < 9; i++) {
+    var card = document.getElementById('h' + i);
+    if (card) {
+      if (dayData.habits[i]) card.classList.add('checked');
+      else card.classList.remove('checked');
+    }
+  }
+
+  var g = ['g0','g1','g2'];
+  g.forEach(function(id, i) {
+    var el = document.getElementById(id);
+    if (el) el.value = dayData.gratitude[i] || '';
+  });
+  var mem = document.getElementById('memory-note');
+  if (mem) mem.value = dayData.note || '';
+
+  var banner = document.getElementById('locked-banner');
+  var lockBtn = document.getElementById('lock-btn');
+  var unlockBtn = document.getElementById('unlock-btn');
+  if (dayData.locked) {
+    if (banner) banner.style.display = 'block';
+    if (lockBtn) { lockBtn.disabled = true; lockBtn.textContent = 'Day Locked'; }
+    if (unlockBtn) unlockBtn.style.display = 'block';
+    disableInputs(true);
+  } else {
+    if (banner) banner.style.display = 'none';
+    if (lockBtn) { lockBtn.disabled = false; lockBtn.textContent = 'Lock My Day'; }
+    if (unlockBtn) unlockBtn.style.display = 'none';
+    disableInputs(false);
+  }
+
+  renderHistory(data);
+}
+
+function disableInputs(disabled) {
+  document.querySelectorAll('.habit-card').forEach(function(c) {
+    c.style.pointerEvents = disabled ? 'none' : '';
+  });
+  document.querySelectorAll('.gratitude-input, .memory-input').forEach(function(inp) {
+    inp.disabled = disabled;
+  });
+}
+
+function renderHistory(data) {
+  var list = document.getElementById('history-list');
+  if (!list) return;
+  var today = todayStr();
+  var start = new Date(data.startDate + 'T00:00:00');
+  var dayNum = getDayNumber(data);
+  var rows = [];
+  for (var i = dayNum - 1; i >= Math.max(0, dayNum - 7); i--) {
+    var d = new Date(start);
+    d.setDate(d.getDate() + i);
+    var key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    var day = data.days[key];
+    var isToday = key === today;
+    var checked = day ? day.habits.filter(Boolean).length : 0;
+    var won = day && day.won;
+    rows.push('<div class="history-row"><div class="history-dot ' + (won ? 'won' : '') + '"></div><div class="history-info"><div class="history-date">' + formatDate(key) + '</div><div class="history-score">' + checked + ' habit' + (checked !== 1 ? 's' : '') + ' completed</div></div>' + (isToday ? '<span class="history-tag">today</span>' : '') + '</div>');
+  }
+  list.innerHTML = rows.join('') || '<div class="history-row"><div class="history-info"><div class="history-date">No history yet</div></div></div>';
+}
+
+function toggleHabit(index) {
+  try {
+    var data = loadData();
+    var today = todayStr();
+    if (!data.days[today]) data.days[today] = emptyDay();
+    if (data.days[today].locked) return;
+    data.days[today].habits[index] = !data.days[today].habits[index];
+    saveData(data);
+    renderDay(data);
+  } catch(e) { console.error(e); }
+}
+
+function lockDay() {
+  try {
+    var data = loadData();
+    var today = todayStr();
+    if (!data.days[today]) data.days[today] = emptyDay();
+    data.days[today].gratitude = [
+      document.getElementById('g0').value,
+      document.getElementById('g1').value,
+      document.getElementById('g2').value
+    ];
+    data.days[today].note = document.getElementById('memory-note').value;
+    var checked = data.days[today].habits.filter(Boolean).length;
+    data.days[today].won = checked >= WIN_THRESHOLD;
+    data.days[today].locked = true;
+    data.lastLocked = today;
+    saveData(data);
+    renderDay(data);
+  } catch(e) { console.error(e); }
+}
+
+function unlockDay() {
+  try {
+    var data = loadData();
+    var today = todayStr();
+    if (data.days[today]) {
+      data.days[today].locked = false;
+      data.days[today].won = false;
+      saveData(data);
+      renderDay(data);
+    }
+  } catch(e) { console.error(e); }
+}
+
+function openHow() {
+  document.getElementById('how-modal').classList.add('open');
+}
+
+function closeHow(e) {
+  if (!e || e.target === document.getElementById('how-modal')) {
+    document.getElementById('how-modal').classList.remove('open');
+  }
+}
+
+// ── INIT ──
+(function() {
+  try {
+    var data = loadData();
+    if (!data) {
+      showHome();
+    } else {
+      renderDay(data);
+      showDay();
+    }
+  } catch(e) {
+    console.error('Init error:', e);
+    showHome();
+  }
+})();
+</script>
+</body>
+</html>
