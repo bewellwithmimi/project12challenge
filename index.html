@@ -751,6 +751,29 @@
       </div>
     </div>
 
+    <!-- FOOD LOG -->
+    <div class="gratitude-card" style="margin-top:8px">
+      <div class="gratitude-label">What I Ate Today</div>
+      <div class="gratitude-inputs">
+        <div class="gratitude-row">
+          <span class="gratitude-num">B</span>
+          <input class="gratitude-input" id="f0" type="text" placeholder="Breakfast..." autocomplete="off">
+        </div>
+        <div class="gratitude-row">
+          <span class="gratitude-num">L</span>
+          <input class="gratitude-input" id="f1" type="text" placeholder="Lunch..." autocomplete="off">
+        </div>
+        <div class="gratitude-row">
+          <span class="gratitude-num">D</span>
+          <input class="gratitude-input" id="f2" type="text" placeholder="Dinner..." autocomplete="off">
+        </div>
+        <div class="gratitude-row">
+          <span class="gratitude-num">S</span>
+          <input class="gratitude-input" id="f3" type="text" placeholder="Snack..." autocomplete="off">
+        </div>
+      </div>
+    </div>
+
     <!-- MEMORY -->
     <div class="memory-card">
       <div class="memory-label">What I want to remember about today</div>
@@ -883,7 +906,7 @@ function startChallenge() {
 }
 
 function emptyDay() {
-  return { habits: [false,false,false,false,false,false,false,false,false], gratitude: ['','',''], note: '', locked: false, won: false };
+  return { habits: [false,false,false,false,false,false,false,false,false], gratitude: ['','',''], food: ['','','',''], note: '', locked: false, won: false };
 }
 
 function renderDay(data) {
@@ -915,6 +938,11 @@ function renderDay(data) {
     var el = document.getElementById(id);
     if (el) el.value = dayData.gratitude[i] || '';
   });
+  var f = ['f0','f1','f2','f3'];
+  f.forEach(function(id, i) {
+    var el = document.getElementById(id);
+    if (el) el.value = (dayData.food && dayData.food[i]) || '';
+  });
   var mem = document.getElementById('memory-note');
   if (mem) mem.value = dayData.note || '';
 
@@ -940,7 +968,7 @@ function disableInputs(disabled) {
   document.querySelectorAll('.habit-card').forEach(function(c) {
     c.style.pointerEvents = disabled ? 'none' : '';
   });
-  document.querySelectorAll('.gratitude-input, .memory-input').forEach(function(inp) {
+  document.querySelectorAll('.gratitude-input, .memory-input, #f0, #f1, #f2, #f3').forEach(function(inp) {
     inp.disabled = disabled;
   });
 }
@@ -986,6 +1014,12 @@ function lockDay() {
       document.getElementById('g0').value,
       document.getElementById('g1').value,
       document.getElementById('g2').value
+    ];
+    data.days[today].food = [
+      document.getElementById('f0').value,
+      document.getElementById('f1').value,
+      document.getElementById('f2').value,
+      document.getElementById('f3').value
     ];
     data.days[today].note = document.getElementById('memory-note').value;
     var checked = data.days[today].habits.filter(Boolean).length;
