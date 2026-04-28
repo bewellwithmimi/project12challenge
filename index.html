@@ -301,9 +301,10 @@
   }
 
   .gratitude-label {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    color: var(--gray);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--black);
     text-transform: uppercase;
     margin-bottom: 10px;
   }
@@ -321,16 +322,17 @@
   }
 
   .gratitude-num {
-    font-size: 11px;
-    color: var(--gray);
-    width: 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--black);
+    width: 16px;
     flex-shrink: 0;
   }
 
   .gratitude-input {
     flex: 1;
     border: none;
-    border-bottom: 1px solid var(--light-gray);
+    border-bottom: 1px solid #c8c3be;
     background: transparent;
     font-family: 'DM Mono', monospace;
     font-size: 13px;
@@ -340,7 +342,7 @@
     -webkit-appearance: none;
   }
 
-  .gratitude-input::placeholder { color: var(--light-gray); }
+  .gratitude-input::placeholder { color: #c0bbb6; }
 
   /* ── MEMORY NOTE ── */
   .memory-card {
@@ -362,7 +364,7 @@
   .memory-input {
     width: 100%;
     border: none;
-    border-bottom: 1px solid var(--light-gray);
+    border-bottom: 1px solid #c8c3be;
     background: transparent;
     font-family: 'DM Mono', monospace;
     font-size: 13px;
@@ -378,7 +380,7 @@
 
   /* ── LOCK BUTTON ── */
   .lock-wrap {
-    padding: 0 24px 20px;
+    padding: 20px 24px 20px;
     background: var(--cream);
   }
 
@@ -421,7 +423,7 @@
 
   /* ── HISTORY ── */
   .history-section {
-    padding: 0 24px 40px;
+    padding: 24px 24px 40px;
   }
 
   .history-label {
@@ -478,6 +480,97 @@
     background: var(--cream);
     padding: 4px 10px;
     border-radius: 100px;
+  }
+
+  /* ── JOURNAL ── */
+  .week-row {
+    background: var(--white);
+    border-radius: 14px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+  }
+
+  .week-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .week-header:active { background: var(--cream); }
+
+  .week-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--black);
+    letter-spacing: 0.04em;
+  }
+
+  .week-meta {
+    font-size: 10px;
+    color: var(--gray);
+    letter-spacing: 0.06em;
+  }
+
+  .week-chevron {
+    font-size: 10px;
+    color: var(--gray);
+    transition: transform 0.2s;
+  }
+  .week-chevron.open { transform: rotate(180deg); }
+
+  .week-days {
+    display: none;
+    border-top: 1px solid var(--cream);
+  }
+  .week-days.open { display: block; }
+
+  .day-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--cream);
+    cursor: pointer;
+    gap: 12px;
+  }
+  .day-row * { pointer-events: none; }
+  .day-row:last-child { border-bottom: none; }
+  .day-row:active { background: var(--cream); }
+
+  .day-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--check-bg);
+    flex-shrink: 0;
+  }
+  .day-dot.won { background: var(--accent); }
+  .day-dot.today { background: var(--black); }
+
+  .day-row-info { flex: 1; }
+
+  .day-row-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--black);
+  }
+
+  .day-row-sub {
+    font-size: 11px;
+    color: var(--gray);
+    margin-top: 1px;
+  }
+
+  .day-row-tag {
+    font-size: 10px;
+    color: var(--gray);
+    background: var(--cream);
+    padding: 3px 8px;
+    border-radius: 100px;
+    letter-spacing: 0.06em;
   }
 
   /* ── HOW TO USE ── */
@@ -732,25 +825,6 @@
       </div>
     </div>
 
-        <!-- GRATITUDE -->
-    <div class="gratitude-card" style="margin-top:8px">
-      <div class="gratitude-label">I am grateful for...</div>
-      <div class="gratitude-inputs">
-        <div class="gratitude-row">
-          <span class="gratitude-num">1.</span>
-          <input class="gratitude-input" id="g0" type="text" oninput="autoSave()" placeholder="..." autocomplete="off">
-        </div>
-        <div class="gratitude-row">
-          <span class="gratitude-num">2.</span>
-          <input class="gratitude-input" id="g1" type="text" oninput="autoSave()" placeholder="..." autocomplete="off">
-        </div>
-        <div class="gratitude-row">
-          <span class="gratitude-num">3.</span>
-          <input class="gratitude-input" id="g2" type="text" oninput="autoSave()" placeholder="..." autocomplete="off">
-        </div>
-      </div>
-    </div>
-
     <!-- FOOD LOG -->
     <div class="gratitude-card" style="margin-top:8px">
       <div class="gratitude-label">What I Ate Today</div>
@@ -772,15 +846,7 @@
           <input class="gratitude-input" id="f3" type="text" oninput="autoSave()" placeholder="Snack..." autocomplete="off">
         </div>
       </div>
-    </div>
-
-    <!-- MEMORY -->
-    <div class="memory-card">
-      <div class="memory-label">What I want to remember about today</div>
-      <textarea class="memory-input" id="memory-note" oninput="autoSave()" placeholder="..." rows="2"></textarea>
-    </div>
-
-  </div><!-- end habits-container -->
+    </div><!-- end habits-container -->
 
   <!-- LOCK -->
   <div class="lock-wrap">
@@ -790,8 +856,18 @@
 
   <!-- HISTORY -->
   <div class="history-section">
-    <div class="history-label">Last 7 Days</div>
-    <div class="history-card" id="history-list"></div>
+    <div class="history-label">Progress by Week</div>
+    <div id="history-list"></div>
+  </div>
+
+  <!-- DAY DETAIL MODAL -->
+  <div class="modal-overlay" id="day-modal" onclick="closeDayModal(event)">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title" id="day-modal-title">Day 1</div>
+      <div class="modal-body" id="day-modal-body"></div>
+      <button class="modal-close" onclick="closeDayModal()">Done</button>
+    </div>
   </div>
 
   <!-- HOW TO USE -->
@@ -906,7 +982,7 @@ function startChallenge() {
 }
 
 function emptyDay() {
-  return { habits: [false,false,false,false,false,false,false,false,false], gratitude: ['','',''], food: ['','','',''], note: '', locked: false, won: false };
+  return { habits: [false,false,false,false,false,false,false,false,false], food: ['','','',''], locked: false, won: false };
 }
 
 function renderDay(data) {
@@ -932,12 +1008,6 @@ function renderDay(data) {
       else card.classList.remove('checked');
     }
   }
-
-  var g = ['g0','g1','g2'];
-  g.forEach(function(id, i) {
-    var el = document.getElementById(id);
-    if (el) el.value = dayData.gratitude[i] || '';
-  });
   var f = ['f0','f1','f2','f3'];
   f.forEach(function(id, i) {
     var el = document.getElementById(id);
@@ -962,13 +1032,14 @@ function renderDay(data) {
   }
 
   renderHistory(data);
+  setupJournalClicks();
 }
 
 function disableInputs(disabled) {
   document.querySelectorAll('.habit-card').forEach(function(c) {
     c.style.pointerEvents = disabled ? 'none' : '';
   });
-  document.querySelectorAll('.gratitude-input, .memory-input, #f0, #f1, #f2, #f3').forEach(function(inp) {
+  document.querySelectorAll('#f0, #f1, #f2, #f3').forEach(function(inp) {
     inp.disabled = disabled;
   });
 }
@@ -979,18 +1050,144 @@ function renderHistory(data) {
   var today = todayStr();
   var start = new Date(data.startDate + 'T00:00:00');
   var dayNum = getDayNumber(data);
-  var rows = [];
-  for (var i = dayNum - 1; i >= Math.max(0, dayNum - 7); i--) {
-    var d = new Date(start);
-    d.setDate(d.getDate() + i);
-    var key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-    var day = data.days[key];
-    var isToday = key === today;
-    var checked = day ? day.habits.filter(Boolean).length : 0;
-    var won = day && day.won;
-    rows.push('<div class="history-row"><div class="history-dot ' + (won ? 'won' : '') + '"></div><div class="history-info"><div class="history-date">' + formatDate(key) + '</div><div class="history-score">' + checked + ' habit' + (checked !== 1 ? 's' : '') + ' completed</div></div>' + (isToday ? '<span class="history-tag">today</span>' : '') + '</div>');
+
+  if (dayNum < 1) {
+    list.innerHTML = '<div style="text-align:center;padding:20px;font-size:12px;color:var(--gray);">Your journal starts on Day 1.</div>';
+    return;
   }
-  list.innerHTML = rows.join('') || '<div class="history-row"><div class="history-info"><div class="history-date">No history yet</div></div></div>';
+
+  var html = '';
+  var totalWeeks = Math.ceil(dayNum / 7);
+
+  for (var w = 1; w <= totalWeeks; w++) {
+    var weekStart = (w - 1) * 7;
+    var weekEnd = Math.min(w * 7, dayNum);
+    var weekWins = 0;
+    var weekDays = 0;
+
+    var daysHtml = '';
+    for (var i = weekStart; i < weekEnd; i++) {
+      var d = new Date(start);
+      d.setDate(d.getDate() + i);
+      var key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+      var day = data.days[key];
+      var isToday = key === today;
+      var checked = day ? day.habits.filter(Boolean).length : 0;
+      var won = day && day.locked && day.won;
+      if (won) weekWins++;
+      weekDays++;
+
+      var dotClass = isToday ? 'today' : (won ? 'won' : '');
+      var tag = isToday ? '<span class="day-row-tag">today</span>' : '';
+      var statusText = isToday ? (checked + '/9 so far') : (day && day.locked ? checked + '/9 habits' : 'Not locked');
+
+      daysHtml += '<div class="day-row" data-key="' + key + '" onclick="openDayModal(this.getAttribute(\"data-key\"))">' +
+        '<div class="day-dot ' + dotClass + '"></div>' +
+        '<div class="day-row-info">' +
+          '<div class="day-row-title">Day ' + (i+1) + ' &nbsp;·&nbsp; ' + formatDate(key) + '</div>' +
+          '<div class="day-row-sub">' + statusText + '</div>' +
+        '</div>' + tag +
+        '</div>';
+    }
+
+    var isCurrentWeek = w === totalWeeks;
+    html += '<div class="week-row">' +
+      '<div class="week-header" onclick="toggleWeek(' + w + ')">' +
+        '<div>' +
+          '<div class="week-title">Week ' + w + '</div>' +
+          '<div class="week-meta">' + weekWins + ' of ' + weekDays + ' days won</div>' +
+        '</div>' +
+        '<span class="week-chevron' + (isCurrentWeek ? ' open' : '') + '" id="chevron-' + w + '">▼</span>' +
+      '</div>' +
+      '<div class="week-days' + (isCurrentWeek ? ' open' : '') + '" id="week-days-' + w + '">' +
+        daysHtml +
+      '</div>' +
+    '</div>';
+  }
+
+  list.innerHTML = html;
+}
+
+function setupJournalClicks() {
+  var list = document.getElementById('history-list');
+  if (!list) return;
+  list.addEventListener('click', function(e) {
+    var row = e.target;
+    while (row && row !== list) {
+      if (row.classList && row.classList.contains('day-row')) {
+        var key = row.getAttribute('data-key');
+        if (key) openDayModal(key);
+        return;
+      }
+      row = row.parentNode;
+    }
+  });
+}
+
+function toggleWeek(w) {
+  var days = document.getElementById('week-days-' + w);
+  var chevron = document.getElementById('chevron-' + w);
+  if (days) days.classList.toggle('open');
+  if (chevron) chevron.classList.toggle('open');
+}
+
+function openDayModal(key) {
+  var data = loadData();
+  if (!data) return;
+  var day = data.days[key];
+  var start = new Date(data.startDate + 'T00:00:00');
+  var keyDate = new Date(key + 'T00:00:00');
+  var dayNum = Math.floor((keyDate - start) / (1000*60*60*24)) + 1;
+
+  var title = document.getElementById('day-modal-title');
+  var body = document.getElementById('day-modal-body');
+  if (!title || !body) return;
+
+  title.textContent = 'Day ' + dayNum + '  ·  ' + formatDate(key);
+
+  if (!day || (!day.locked && key !== todayStr())) {
+    body.innerHTML = '<p>No entry logged for this day.</p>';
+  } else {
+    var habitNames = [
+      'Wake Up Before 7 a.m.',
+      'Self-Care Routine',
+      'Home-Care Routine',
+      'Read 10 Pages',
+      'Side-Hustle or Skill Work',
+      'Exercise 30+ Minutes',
+      'Eat Clean',
+      'Evening Routine',
+      'Tracked My Progress'
+    ];
+
+    var habitsHtml = '<strong>Habits</strong><br>';
+    day.habits.forEach(function(checked, i) {
+      habitsHtml += (checked ? '✓' : '○') + ' ' + habitNames[i] + '<br>';
+    });
+
+    var gratHtml = '';
+
+    var foodHtml = '';
+    if (day.food && day.food.some(function(f){ return f; })) {
+      foodHtml = '<br><strong>What I Ate</strong><br>';
+      var labels = ['B', 'L', 'D', 'S'];
+      day.food.forEach(function(f, i) {
+        if (f) foodHtml += labels[i] + ': ' + f + '<br>';
+      });
+    }
+
+    var noteHtml = '';
+
+    body.innerHTML = habitsHtml + foodHtml;
+  }
+
+  document.getElementById('day-modal').classList.add('open');
+}
+
+function closeDayModal(e) {
+  if (!e || e.target === document.getElementById('day-modal')) {
+    document.getElementById('day-modal').classList.remove('open');
+  }
 }
 
 function toggleHabit(index) {
@@ -1012,18 +1209,12 @@ function autoSave() {
     var today = todayStr();
     if (!data.days[today]) data.days[today] = emptyDay();
     if (data.days[today].locked) return;
-    data.days[today].gratitude = [
-      document.getElementById('g0').value,
-      document.getElementById('g1').value,
-      document.getElementById('g2').value
-    ];
     data.days[today].food = [
       document.getElementById('f0').value,
       document.getElementById('f1').value,
       document.getElementById('f2').value,
       document.getElementById('f3').value
     ];
-    data.days[today].note = document.getElementById('memory-note').value;
     saveData(data);
   } catch(e) { console.error(e); }
 }
@@ -1033,18 +1224,12 @@ function lockDay() {
     var data = loadData();
     var today = todayStr();
     if (!data.days[today]) data.days[today] = emptyDay();
-    data.days[today].gratitude = [
-      document.getElementById('g0').value,
-      document.getElementById('g1').value,
-      document.getElementById('g2').value
-    ];
     data.days[today].food = [
       document.getElementById('f0').value,
       document.getElementById('f1').value,
       document.getElementById('f2').value,
       document.getElementById('f3').value
     ];
-    data.days[today].note = document.getElementById('memory-note').value;
     var checked = data.days[today].habits.filter(Boolean).length;
     data.days[today].won = checked >= WIN_THRESHOLD;
     data.days[today].locked = true;
